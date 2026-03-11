@@ -1,0 +1,58 @@
+name: matrimony_app
+description: Royal Matrimony App - Vivaha Elite
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  google_fonts: ^6.2.1
+  cached_network_image: ^3.3.1
+  intl: ^0.19.0
+  image_picker: ^1.1.2
+  http: ^1.1.0   # ✅ ADD THIS LINE
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_native_splash: ^2.4.7
+  flutter_launcher_icons: ^0.14.4
+
+# ---------------- SPLASH SCREEN ----------------
+flutter_native_splash:
+  color: "#B5525C"
+  image: assets/images/logo3.png
+
+  android: true
+  ios: false
+
+  android_12:
+    image: assets/images/logo3.png
+    icon_background_color: "#B5525C"
+
+# ---------------- APP ICON ----------------
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path: assets/images/logo3.png
+  adaptive_icon_background: "#B5525C"
+  adaptive_icon_foreground: assets/images/logo3.png
+
+# ---------------- FLUTTER SECTION ----------------
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/royal_bg.png
+    - assets/images/onboard1.png
+    - assets/images/onboard2.png
+    - assets/images/google.png
+    - assets/images/facebook.png
+    - assets/images/logo3.png
