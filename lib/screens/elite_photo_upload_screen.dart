@@ -4,7 +4,12 @@ import 'package:image_picker/image_picker.dart';
 import 'elite_horoscope_details_screen.dart';
 
 class ElitePhotoUploadScreen extends StatefulWidget {
-  const ElitePhotoUploadScreen({super.key});
+  final String userId;
+
+  const ElitePhotoUploadScreen({
+    super.key,
+    required this.userId,
+  });
 
   @override
   State<ElitePhotoUploadScreen> createState() =>
@@ -31,16 +36,15 @@ class _ElitePhotoUploadScreenState
   void initState() {
     super.initState();
 
-    _controller =
-        AnimationController(vsync: this, duration: const Duration(milliseconds: 800));
+    _controller = AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 800));
 
-    _fadeAnimation =
-        Tween<double>(begin: 0, end: 1).animate(
+    _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeIn),
     );
 
-    _scaleAnimation =
-        Tween<double>(begin: 0.9, end: 1).animate(
+    _scaleAnimation = Tween<double>(begin: 0.9, end: 1).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeOutBack),
     );
 
@@ -57,35 +61,25 @@ class _ElitePhotoUploadScreenState
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (_) => const EliteHoroscopeDetailsScreen(),
+        builder: (_) =>
+            EliteHoroscopeDetailsScreen(userId: widget.userId),
       ),
     );
   }
 
   Future<void> _pickImage(ImageSource source) async {
-    final XFile? image =
-        await _picker.pickImage(source: source);
+    final XFile? image = await _picker.pickImage(source: source);
 
     if (image != null) {
-      setState(() {
-        _selectedImage = File(image.path);
-      });
-
+      setState(() => _selectedImage = File(image.path));
       _startUploading();
     }
   }
 
   void _startUploading() async {
-    setState(() {
-      _isUploading = true;
-    });
-
+    setState(() => _isUploading = true);
     await Future.delayed(const Duration(seconds: 2));
-
-    setState(() {
-      _isUploading = false;
-    });
-
+    setState(() => _isUploading = false);
     _navigateToHoroscope();
   }
 
@@ -117,9 +111,7 @@ class _ElitePhotoUploadScreenState
     );
   }
 
-  void _skipPhoto() {
-    _navigateToHoroscope();
-  }
+  void _skipPhoto() => _navigateToHoroscope();
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +129,7 @@ class _ElitePhotoUploadScreenState
 
                   const SizedBox(height: 40),
 
-                  /// Image Preview
+                  // Image Preview
                   Container(
                     height: 200,
                     width: 200,
@@ -154,15 +146,9 @@ class _ElitePhotoUploadScreenState
                     ),
                     child: ClipOval(
                       child: _selectedImage != null
-                          ? Image.file(
-                              _selectedImage!,
-                              fit: BoxFit.cover,
-                            )
-                          : const Icon(
-                              Icons.account_circle,
-                              size: 120,
-                              color: Colors.grey,
-                            ),
+                          ? Image.file(_selectedImage!, fit: BoxFit.cover)
+                          : const Icon(Icons.account_circle,
+                              size: 120, color: Colors.grey),
                     ),
                   ),
 
@@ -170,28 +156,21 @@ class _ElitePhotoUploadScreenState
 
                   const Text(
                     "Add your photo now",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
 
                   const Spacer(),
 
-                  /// Uploading Indicator
                   if (_isUploading)
-                    Column(
-                      children: const [
-                        CircularProgressIndicator(
-                          color: gold,
-                        ),
+                    const Column(
+                      children: [
+                        CircularProgressIndicator(color: gold),
                         SizedBox(height: 10),
                         Text("Uploading... Please wait"),
                         SizedBox(height: 20),
                       ],
                     ),
 
-                  /// ADD PHOTO BUTTON
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30),
@@ -207,12 +186,9 @@ class _ElitePhotoUploadScreenState
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: gold,
-                        minimumSize:
-                            const Size(double.infinity, 55),
+                        minimumSize: const Size(double.infinity, 55),
                         shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(30),
-                        ),
+                            borderRadius: BorderRadius.circular(30)),
                       ),
                       onPressed: _showPickerOptions,
                       child: const Text(
@@ -232,9 +208,7 @@ class _ElitePhotoUploadScreenState
                     child: const Text(
                       "I'll add photo later  >",
                       style: TextStyle(
-                        color: gold,
-                        fontWeight: FontWeight.w600,
-                      ),
+                          color: gold, fontWeight: FontWeight.w600),
                     ),
                   ),
 

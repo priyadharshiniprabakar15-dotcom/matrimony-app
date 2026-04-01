@@ -1,24 +1,63 @@
 import 'package:flutter/material.dart';
 
 class EditProfileScreen extends StatefulWidget {
-  const EditProfileScreen({super.key});
+  final String userId;
+
+  const EditProfileScreen({
+    super.key,
+    required this.userId,
+  });
 
   @override
-  State<EditProfileScreen> createState() =>
-      _EditProfileScreenState();
+  State<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
-class _EditProfileScreenState
-    extends State<EditProfileScreen> {
+class _EditProfileScreenState extends State<EditProfileScreen> {
 
-  final TextEditingController nameController =
-      TextEditingController(text: "Madhu");
+  late TextEditingController nameController;
+  late TextEditingController professionController;
+  late TextEditingController locationController;
 
-  final TextEditingController professionController =
-      TextEditingController(text: "Software Engineer");
+  @override
+  void initState() {
+    super.initState();
+    nameController       = TextEditingController(text: "Madhu");
+    professionController = TextEditingController(text: "Software Engineer");
+    locationController   = TextEditingController(text: "Chennai");
+  }
 
-  final TextEditingController locationController =
-      TextEditingController(text: "Chennai");
+  @override
+  void dispose() {
+    nameController.dispose();
+    professionController.dispose();
+    locationController.dispose();
+    super.dispose();
+  }
+
+  void _saveProfile() {
+    final name       = nameController.text.trim();
+    final profession = professionController.text.trim();
+    final location   = locationController.text.trim();
+
+    if (name.isEmpty || profession.isEmpty || location.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Please fill all fields"),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Profile Updated Successfully ✅"),
+        backgroundColor: Colors.green,
+      ),
+    );
+
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,17 +85,13 @@ class _EditProfileScreenState
                 padding: const EdgeInsets.symmetric(
                     horizontal: 50, vertical: 15),
                 shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(30)),
+                    borderRadius: BorderRadius.circular(30)),
               ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
+              onPressed: _saveProfile,
               child: const Text(
                 "Save Changes 💖",
                 style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold),
+                    color: Colors.white, fontWeight: FontWeight.bold),
               ),
             )
           ],
@@ -65,8 +100,7 @@ class _EditProfileScreenState
     );
   }
 
-  Widget _buildField(
-      String label, TextEditingController controller) {
+  Widget _buildField(String label, TextEditingController controller) {
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
       child: TextField(

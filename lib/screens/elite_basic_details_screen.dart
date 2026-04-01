@@ -29,8 +29,7 @@ class _EliteBasicDetailsScreenState
       duration: const Duration(seconds: 6),
     )..repeat();
 
-    _animation =
-        Tween<double>(begin: 0, end: 1).animate(_controller);
+    _animation = Tween<double>(begin: 0, end: 1).animate(_controller);
   }
 
   @override
@@ -39,7 +38,6 @@ class _EliteBasicDetailsScreenState
     super.dispose();
   }
 
-  /// Floating Heart
   Widget _floatingHeart(double top, double left, double size) {
     return AnimatedBuilder(
       animation: _animation,
@@ -49,11 +47,7 @@ class _EliteBasicDetailsScreenState
           left: left,
           child: Opacity(
             opacity: 0.10,
-            child: Icon(
-              Icons.favorite,
-              color: gold,
-              size: size,
-            ),
+            child: Icon(Icons.favorite, color: gold, size: size),
           ),
         );
       },
@@ -61,8 +55,6 @@ class _EliteBasicDetailsScreenState
   }
 
   void _verifyAndNavigate() {
-
-    /// Show Verified Message
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text("OTP Verified Successfully ✅"),
@@ -71,21 +63,14 @@ class _EliteBasicDetailsScreenState
       ),
     );
 
-    /// After delay move to Personal Details
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.pushReplacement(
         context,
         PageRouteBuilder(
-          transitionDuration:
-              const Duration(milliseconds: 500),
-          pageBuilder: (_, __, ___) =>
-              const ElitePersonalDetailsScreen(),
-          transitionsBuilder:
-              (_, animation, __, child) {
-            return FadeTransition(
-              opacity: animation,
-              child: child,
-            );
+          transitionDuration: const Duration(milliseconds: 500),
+          pageBuilder: (_, __, ___) => const ElitePersonalDetailsScreen(),
+          transitionsBuilder: (_, animation, __, child) {
+            return FadeTransition(opacity: animation, child: child);
           },
         ),
       );
@@ -100,26 +85,20 @@ class _EliteBasicDetailsScreenState
         backgroundColor: primaryMaroon,
         elevation: 0,
         centerTitle: true,
-        iconTheme:
-            const IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         title: const Text(
           "Basic Details",
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
       body: Stack(
         children: [
 
-          /// 💛 Floating Background Hearts
           _floatingHeart(120, 30, 40),
           _floatingHeart(280, 250, 30),
           _floatingHeart(450, 100, 50),
           _floatingHeart(600, 280, 35),
 
-          /// Main Content
           SingleChildScrollView(
             padding: const EdgeInsets.all(25),
             child: Column(
@@ -139,42 +118,15 @@ class _EliteBasicDetailsScreenState
                 _buildField("Mobile Number"),
                 const SizedBox(height: 40),
 
-                /// 💛 Gold Glow Get OTP Button
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.circular(25),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color(0x55D4AF37),
-                        blurRadius: 30,
-                        spreadRadius: 4,
-                        offset: Offset(0, 15),
-                      ),
-                    ],
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: gold,
+                    minimumSize: const Size(double.infinity, 55),
                   ),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: gold,
-                      minimumSize:
-                          const Size(double.infinity, 55),
-                      shape:
-                          RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(25),
-                      ),
-                      elevation: 0,
-                    ),
-                    onPressed: _verifyAndNavigate,
-                    child: const Text(
-                      "Get OTP",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight:
-                            FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
+                  onPressed: _verifyAndNavigate,
+                  child: const Text(
+                    "Get OTP",
+                    style: TextStyle(color: Colors.white, fontSize: 18),
                   ),
                 ),
 
@@ -187,8 +139,7 @@ class _EliteBasicDetailsScreenState
     );
   }
 
-  Widget _buildField(String hint,
-      {bool obscure = false}) {
+  Widget _buildField(String hint, {bool obscure = false}) {
     return TextField(
       obscureText: obscure,
       decoration: InputDecoration(
@@ -196,11 +147,9 @@ class _EliteBasicDetailsScreenState
         filled: true,
         fillColor: Colors.white,
         contentPadding:
-            const EdgeInsets.symmetric(
-                horizontal: 20, vertical: 16),
+            const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         border: OutlineInputBorder(
-          borderRadius:
-              BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(20),
           borderSide: BorderSide.none,
         ),
       ),

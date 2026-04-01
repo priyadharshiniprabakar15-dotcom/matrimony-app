@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'elite_additional_details_screen.dart';
 
 class EliteProfessionalDetailsScreen extends StatefulWidget {
-  const EliteProfessionalDetailsScreen({super.key});
+  final String userId;
+
+  const EliteProfessionalDetailsScreen({
+    super.key,
+    required this.userId,
+  });
 
   @override
   State<EliteProfessionalDetailsScreen> createState() =>
@@ -23,37 +28,20 @@ class _EliteProfessionalDetailsScreenState
   String? annualIncome;
 
   final List<String> educationList = [
-    "BE / B.Tech",
-    "B.Sc",
-    "MBA",
-    "M.Tech",
-    "Doctor",
-    "Other"
+    "BE / B.Tech", "B.Sc", "MBA", "M.Tech", "Doctor", "Other"
   ];
 
   final List<String> employmentList = [
-    "Private",
-    "Government",
-    "Business",
-    "Self Employed",
-    "Not Working"
+    "Private", "Government", "Business", "Self Employed", "Not Working"
   ];
 
   final List<String> occupationList = [
-    "Software Engineer",
-    "Doctor",
-    "Teacher",
-    "Business",
-    "Banking",
-    "Other"
+    "Software Engineer", "Doctor", "Teacher", "Business", "Banking", "Other"
   ];
 
   final List<String> incomeList = [
-    "Below 2 Lakhs",
-    "2 - 5 Lakhs",
-    "5 - 10 Lakhs",
-    "10 - 20 Lakhs",
-    "20+ Lakhs"
+    "Below 2 Lakhs", "2 - 5 Lakhs", "5 - 10 Lakhs",
+    "10 - 20 Lakhs", "20+ Lakhs"
   ];
 
   Widget _dropdown(
@@ -61,7 +49,6 @@ class _EliteProfessionalDetailsScreenState
       String? value,
       List<String> items,
       Function(String?) onChanged) {
-
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
       padding: const EdgeInsets.symmetric(horizontal: 14),
@@ -76,10 +63,7 @@ class _EliteProfessionalDetailsScreenState
           value: value,
           isExpanded: true,
           items: items
-              .map((item) => DropdownMenuItem(
-                    value: item,
-                    child: Text(item),
-                  ))
+              .map((item) => DropdownMenuItem(value: item, child: Text(item)))
               .toList(),
           onChanged: onChanged,
         ),
@@ -93,7 +77,7 @@ class _EliteProfessionalDetailsScreenState
       PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 400),
         pageBuilder: (_, __, ___) =>
-            const EliteAdditionalDetailsScreen(),
+            EliteAdditionalDetailsScreen(userId: widget.userId),
         transitionsBuilder: (_, animation, __, child) {
           return SlideTransition(
             position: Tween<Offset>(
@@ -116,10 +100,7 @@ class _EliteProfessionalDetailsScreenState
         iconTheme: const IconThemeData(color: Colors.white),
         title: const Text(
           "Professional Details (4/5)",
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
       body: SingleChildScrollView(
@@ -129,44 +110,24 @@ class _EliteProfessionalDetailsScreenState
 
             const SizedBox(height: 15),
 
-            _dropdown(
-              "Select your education details",
-              education,
-              educationList,
-              (val) => setState(() => education = val),
-            ),
+            _dropdown("Select your education details", education,
+                educationList, (val) => setState(() => education = val)),
 
-            _dropdown(
-              "Select your employment type",
-              employmentType,
-              employmentList,
-              (val) => setState(() => employmentType = val),
-            ),
+            _dropdown("Select your employment type", employmentType,
+                employmentList, (val) => setState(() => employmentType = val)),
 
-            _dropdown(
-              "Select your occupation",
-              occupation,
-              occupationList,
-              (val) => setState(() => occupation = val),
-            ),
+            _dropdown("Select your occupation", occupation,
+                occupationList, (val) => setState(() => occupation = val)),
 
-            _dropdown(
-              "Your annual income currency (Optional)",
-              currency,
-              ["INR - India", "USD - USA", "GBP - UK"],
-              (val) => setState(() => currency = val),
-            ),
+            _dropdown("Your annual income currency (Optional)", currency,
+                ["INR - India", "USD - USA", "GBP - UK"],
+                (val) => setState(() => currency = val)),
 
-            _dropdown(
-              "Select your annual income (Optional)",
-              annualIncome,
-              incomeList,
-              (val) => setState(() => annualIncome = val),
-            ),
+            _dropdown("Select your annual income (Optional)", annualIncome,
+                incomeList, (val) => setState(() => annualIncome = val)),
 
             const SizedBox(height: 45),
 
-            /// NEXT BUTTON
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
@@ -184,9 +145,7 @@ class _EliteProfessionalDetailsScreenState
                   backgroundColor: gold,
                   minimumSize: const Size(double.infinity, 55),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  elevation: 0,
+                      borderRadius: BorderRadius.circular(30)),
                 ),
                 onPressed: _goToAdditionalScreen,
                 child: const Text(
@@ -197,29 +156,6 @@ class _EliteProfessionalDetailsScreenState
                       color: Colors.white),
                 ),
               ),
-            ),
-
-            const SizedBox(height: 25),
-
-            /// NEED HELP
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text(
-                  "Need help? Call  ",
-                  style: TextStyle(color: Colors.black54),
-                ),
-                Icon(Icons.phone,
-                    color: Color(0xFFD4AF37),
-                    size: 18),
-                SizedBox(width: 6),
-                Text(
-                  "8144-99-88-77",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFFD4AF37)),
-                ),
-              ],
             ),
 
             const SizedBox(height: 40),

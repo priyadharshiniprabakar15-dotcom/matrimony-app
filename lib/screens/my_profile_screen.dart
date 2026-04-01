@@ -3,7 +3,12 @@ import 'package:flutter/material.dart';
 import 'edit_profile_screen.dart';
 
 class MyProfileScreen extends StatefulWidget {
-  const MyProfileScreen({super.key});
+  final String userId; // ✅ ADD THIS
+
+  const MyProfileScreen({
+    super.key,
+    required this.userId,
+  });
 
   @override
   State<MyProfileScreen> createState() => _MyProfileScreenState();
@@ -120,7 +125,7 @@ class _MyProfileScreenState extends State<MyProfileScreen>
       body: Stack(
         children: [
 
-          /// Animated Gradient Background
+          /// Animated Background
           AnimatedBuilder(
             animation: _bgController,
             builder: (context, child) {
@@ -229,7 +234,7 @@ class _MyProfileScreenState extends State<MyProfileScreen>
 
                   const SizedBox(height: 30),
 
-                  /// ✅ Edit Profile Button
+                  /// ✅ FIXED BUTTON
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.pinkAccent,
@@ -243,8 +248,9 @@ class _MyProfileScreenState extends State<MyProfileScreen>
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) =>
-                              const EditProfileScreen(),
+                          builder: (_) => EditProfileScreen(
+                            userId: widget.userId, // ✅ PASS HERE
+                          ),
                         ),
                       );
                     },

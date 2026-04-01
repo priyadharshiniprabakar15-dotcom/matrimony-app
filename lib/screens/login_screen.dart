@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'signup_screen.dart';
 import 'forgot_password_screen.dart';
 import 'home_screen.dart';
-import '../services/api_service.dart';
+import 'admin_dashboard_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -13,6 +13,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen>
     with SingleTickerProviderStateMixin {
+
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
 
@@ -42,11 +43,12 @@ class _LoginScreenState extends State<LoginScreen>
     super.dispose();
   }
 
-  // 🔐 LOGIN FUNCTION
+  // 🔐 LOGIN FUNCTION (UPDATED)
   Future<void> _login() async {
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
 
+    // 🔴 Validation
     if (email.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -58,44 +60,37 @@ class _LoginScreenState extends State<LoginScreen>
     }
 
     setState(() => _isLoading = true);
+    await Future.delayed(const Duration(seconds: 1));
+    setState(() => _isLoading = false);
 
-    try {
-      final result = await ApiService.login(email, password);
+    // ✅ USER LOGIN
+    if (email == "user@gmail.com" && password == "000") {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const HomeScreen(userId: "1"),
+        ),
+      );
+    }
 
-      print("LOGIN RESULT: $result");
+    // ✅ ADMIN LOGIN
+    else if (email == "admin@gmail.com" && password == "123") {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const AdminDashboardScreen(),
+        ),
+      );
+    }
 
-      if (!mounted) return;
-
-      // ✅ FIXED CONDITION
-      if (result["status"] == "success") {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Login Successful"),
-            backgroundColor: Colors.green,
-          ),
-        );
-
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(result["message"] ?? "Login failed"),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    } catch (e) {
+    // ❌ INVALID LOGIN
+    else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Error: $e"),
+        const SnackBar(
+          content: Text("Invalid email or password"),
           backgroundColor: Colors.red,
         ),
       );
-    } finally {
-      if (mounted) setState(() => _isLoading = false);
     }
   }
 
@@ -118,19 +113,19 @@ class _LoginScreenState extends State<LoginScreen>
     return Scaffold(
       body: Stack(
         children: [
+
+          // 🌈 Background
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [
-                  Color(0xFF9B1C31),
-                  Color(0xFFB23A48),
-                ],
+                colors: [Color(0xFF9B1C31), Color(0xFFB23A48)],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
               ),
             ),
           ),
 
+          // 🖼️ Background Image
           Positioned.fill(
             child: Opacity(
               opacity: 0.15,
@@ -141,6 +136,7 @@ class _LoginScreenState extends State<LoginScreen>
             ),
           ),
 
+          // ✨ UI
           SafeArea(
             child: FadeTransition(
               opacity: _fadeAnimation,
@@ -149,6 +145,7 @@ class _LoginScreenState extends State<LoginScreen>
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+
                     const Text(
                       "Welcome Back 👑",
                       style: TextStyle(
@@ -160,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen>
 
                     const SizedBox(height: 40),
 
-                    // EMAIL
+                    // 📧 Email
                     TextField(
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
@@ -179,7 +176,7 @@ class _LoginScreenState extends State<LoginScreen>
 
                     const SizedBox(height: 20),
 
-                    // PASSWORD
+                    // 🔒 Password
                     TextField(
                       controller: _passwordController,
                       obscureText: _obscurePassword,
@@ -211,6 +208,7 @@ class _LoginScreenState extends State<LoginScreen>
 
                     const SizedBox(height: 10),
 
+                    // 🔁 Forgot Password
                     Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
@@ -227,7 +225,7 @@ class _LoginScreenState extends State<LoginScreen>
 
                     const SizedBox(height: 20),
 
-                    // LOGIN BUTTON
+                    // 🚀 Login Button
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFD4AF37),
@@ -251,6 +249,7 @@ class _LoginScreenState extends State<LoginScreen>
 
                     const SizedBox(height: 25),
 
+                    // 🆕 Signup
                     GestureDetector(
                       onTap: _goToSignUp,
                       child: const Text(

@@ -14,7 +14,9 @@ import 'notification_screen.dart';
 import 'interests_screen.dart';
 import 'all_profiles_screen.dart';
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final String userId;
+
+  const HomeScreen({super.key, required this.userId});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -370,12 +372,16 @@ Widget _drawerCard(IconData icon, String title, Widget screen) {
               const SizedBox(height: 30),
 
               /// 📋 Navigation Options
-             _drawerCard(Icons.home, "Home", const HomeScreen()),
+             _drawerCard(Icons.home, "Home",HomeScreen(userId: widget.userId)),
 _drawerCard(Icons.favorite, "My Matches", const MatchesScreen()),
-_drawerCard(Icons.chat, "Messages", const MessagesScreen(userId: "4")),
+_drawerCard(Icons.chat, "Messages", MessagesScreen(userId: widget.userId)),
 _drawerCard(Icons.star, "Shortlisted", const ShortlistedScreen()),
 _drawerCard(Icons.workspace_premium, "Pricing Plans", const PricingScreen()),
-_drawerCard(Icons.settings, "Settings", const SettingsScreen()),
+_drawerCard(
+  Icons.settings,
+  "Settings",
+  SettingsScreen(userId: widget.userId), // pass logged-in userId
+),
 _drawerCard(Icons.help_outline, "Help & Support", const HelpScreen()),
 
               const SizedBox(height: 30),
@@ -599,12 +605,8 @@ GestureDetector(
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => ProfileDetailsScreen(
-          name: "Madhu",
-          age: "26 yrs",
-          location: "Chennai",
-          image:
-              "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e",
+        builder: (_) => const ProfileDetailsScreen(
+          userId: "4",
         ),
       ),
     );
@@ -623,12 +625,8 @@ GestureDetector(
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => ProfileDetailsScreen(
-          name: "Arjun",
-          age: "28 yrs",
-          location: "Coimbatore",
-          image:
-              "https://images.unsplash.com/photo-1500648767791-00dcc994a43e",
+        builder: (_) => const ProfileDetailsScreen(
+          userId: "5",
         ),
       ),
     );
@@ -691,13 +689,13 @@ bottomNavigationBar: Container(
       else if (index == 2) {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => const InterestsScreen()),
+          MaterialPageRoute(builder: (_) => const InterestsScreen(userId: "4")),
         );
       }
       else if (index == 3) {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => const MyProfileScreen()),
+          MaterialPageRoute(builder: (_) =>  MyProfileScreen(userId:widget.userId)),
         );
       }
     },

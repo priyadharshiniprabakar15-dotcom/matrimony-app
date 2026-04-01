@@ -36,20 +36,14 @@ class _EliteCreateProfileScreenState
         backgroundColor: primaryMaroon,
         elevation: 0,
         centerTitle: true,
-        iconTheme: const IconThemeData(
-          color: Colors.white, // ✅ Back icon white
-        ),
+        iconTheme: const IconThemeData(color: Colors.white),
         title: const Text(
           "Create Profile",
-          style: TextStyle(
-            color: Colors.white, // ✅ Title white
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(
-            horizontal: 20, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Column(
           children: [
 
@@ -66,7 +60,6 @@ class _EliteCreateProfileScreenState
 
             const SizedBox(height: 25),
 
-            /// ✅ Smaller & Professional Grid
             Expanded(
               child: GridView.builder(
                 itemCount: options.length,
@@ -75,28 +68,19 @@ class _EliteCreateProfileScreenState
                   crossAxisCount: 2,
                   mainAxisSpacing: 14,
                   crossAxisSpacing: 14,
-                  childAspectRatio: 3.2, // ✅ Smaller height
+                  childAspectRatio: 3.2,
                 ),
                 itemBuilder: (context, index) {
-                  bool isSelected =
-                      selected == options[index];
+                  bool isSelected = selected == options[index];
 
                   return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selected = options[index];
-                      });
-                    },
+                    onTap: () => setState(() => selected = options[index]),
                     child: AnimatedContainer(
-                      duration:
-                          const Duration(milliseconds: 200),
+                      duration: const Duration(milliseconds: 200),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: isSelected
-                            ? gold
-                            : Colors.white,
-                        borderRadius:
-                            BorderRadius.circular(18), // smaller radius
+                        color: isSelected ? gold : Colors.white,
+                        borderRadius: BorderRadius.circular(18),
                         border: Border.all(
                           color: primaryMaroon,
                           width: 1.2,
@@ -104,10 +88,8 @@ class _EliteCreateProfileScreenState
                         boxShadow: isSelected
                             ? [
                                 BoxShadow(
-                                  color:
-                                      gold.withOpacity(0.4),
+                                  color: gold.withOpacity(0.4),
                                   blurRadius: 15,
-                                  spreadRadius: 1,
                                 ),
                               ]
                             : [],
@@ -115,11 +97,8 @@ class _EliteCreateProfileScreenState
                       child: Text(
                         options[index],
                         style: TextStyle(
-                          color: isSelected
-                              ? Colors.white
-                              : primaryMaroon,
-                          fontWeight:
-                              FontWeight.w600,
+                          color: isSelected ? Colors.white : primaryMaroon,
+                          fontWeight: FontWeight.w600,
                           fontSize: 15,
                         ),
                       ),
@@ -129,11 +108,9 @@ class _EliteCreateProfileScreenState
               ),
             ),
 
-            /// ✅ Gold Glow Start Button
             Container(
               decoration: BoxDecoration(
-                borderRadius:
-                    BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(30),
                 boxShadow: const [
                   BoxShadow(
                     color: Color(0x55D4AF37),
@@ -146,13 +123,10 @@ class _EliteCreateProfileScreenState
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: gold,
-                  minimumSize:
-                      const Size(double.infinity, 52),
+                  minimumSize: const Size(double.infinity, 52),
                   shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(30),
+                    borderRadius: BorderRadius.circular(30),
                   ),
-                  elevation: 0,
                 ),
                 onPressed: selected.isEmpty
                     ? null
@@ -160,8 +134,7 @@ class _EliteCreateProfileScreenState
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) =>
-                                const EliteBasicDetailsScreen(),
+                            builder: (_) => const EliteBasicDetailsScreen(),
                           ),
                         );
                       },
@@ -169,8 +142,7 @@ class _EliteCreateProfileScreenState
                   "Start Registration",
                   style: TextStyle(
                     fontSize: 17,
-                    fontWeight:
-                        FontWeight.bold,
+                    fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),

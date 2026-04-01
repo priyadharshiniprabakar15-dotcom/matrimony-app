@@ -1,9 +1,11 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'daily_recommendation_screen.dart'; // ✅ IMPORT THIS
+import 'daily_recommendation_screen.dart';
 
 class EliteWelcomeOfferScreen extends StatefulWidget {
-  const EliteWelcomeOfferScreen({super.key});
+  final String userId;
+
+  const EliteWelcomeOfferScreen({super.key, required this.userId});
 
   @override
   State<EliteWelcomeOfferScreen> createState() =>
@@ -41,40 +43,32 @@ class _EliteWelcomeOfferScreenState
       body: Stack(
         children: [
 
-          /// 🌸 Background Gradient
+          // Background Gradient
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [
-                  Color(0xFFFFE4EC),
-                  Color(0xFFFFF6E5),
-                ],
+                colors: [Color(0xFFFFE4EC), Color(0xFFFFF6E5)],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
             ),
           ),
 
-          /// 💖 Floating Hearts
+          // Floating Hearts
           ...List.generate(5, (index) {
             return AnimatedBuilder(
               animation: _heartController,
               builder: (_, child) {
-                final height =
-                    MediaQuery.of(context).size.height;
+                final height = MediaQuery.of(context).size.height;
                 final progress =
                     (_heartController.value + index * 0.2) % 1;
-
                 return Positioned(
                   left: 40.0 + (index * 60),
                   top: height - (progress * height),
                   child: Opacity(
                     opacity: 1 - progress,
-                    child: const Icon(
-                      Icons.favorite,
-                      size: 18,
-                      color: Colors.pinkAccent,
-                    ),
+                    child: const Icon(Icons.favorite,
+                        size: 18, color: Colors.pinkAccent),
                   ),
                 );
               },
@@ -87,18 +81,14 @@ class _EliteWelcomeOfferScreenState
 
                 const SizedBox(height: 20),
 
-                /// 🎁 Header
                 const Column(
                   children: [
-                    Icon(Icons.card_giftcard,
-                        size: 45,
-                        color: Colors.pink),
+                    Icon(Icons.card_giftcard, size: 45, color: Colors.pink),
                     SizedBox(height: 8),
                     Text(
                       "Welcome Offer",
                       style: TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold),
+                          fontSize: 26, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 6),
                     Text(
@@ -111,41 +101,32 @@ class _EliteWelcomeOfferScreenState
 
                 const SizedBox(height: 25),
 
-                /// 💳 Plans PageView
                 Expanded(
                   child: PageView.builder(
                     controller: _pageController,
                     itemCount: 3,
-                    onPageChanged: (index) {
-                      setState(() {
-                        currentPage = index;
-                      });
-                    },
-                    itemBuilder: (context, index) {
-                      return _priceCard(index);
-                    },
+                    onPageChanged: (index) =>
+                        setState(() => currentPage = index),
+                    itemBuilder: (context, index) => _priceCard(index),
                   ),
                 ),
 
                 const SizedBox(height: 15),
 
-                /// Page Indicator
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(
                     3,
                     (index) => AnimatedContainer(
                       duration: const Duration(milliseconds: 300),
-                      margin:
-                          const EdgeInsets.symmetric(horizontal: 4),
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
                       height: 8,
                       width: currentPage == index ? 22 : 8,
                       decoration: BoxDecoration(
                         color: currentPage == index
                             ? Colors.pink
                             : Colors.grey.shade400,
-                        borderRadius:
-                            BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                   ),
@@ -153,7 +134,6 @@ class _EliteWelcomeOfferScreenState
 
                 const SizedBox(height: 15),
 
-                /// View Packages
                 TextButton(
                   onPressed: () {},
                   child: const Text(
@@ -164,14 +144,13 @@ class _EliteWelcomeOfferScreenState
                   ),
                 ),
 
-                /// ✅ SKIP BUTTON NAVIGATION
                 TextButton(
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            const DailyRecommendationScreen(),
+                        builder: (context) => DailyRecommendationScreen(
+                            userId: widget.userId),
                       ),
                     );
                   },
@@ -193,26 +172,10 @@ class _EliteWelcomeOfferScreenState
   }
 
   Widget _priceCard(int index) {
-
     final plans = [
-      {
-        "title": "Gold",
-        "discount": "27% OFF",
-        "old": "₹ 5,500",
-        "price": "₹ 4,000"
-      },
-      {
-        "title": "Prime Gold",
-        "discount": "40% OFF",
-        "old": "₹ 8,000",
-        "price": "₹ 4,800"
-      },
-      {
-        "title": "Till U Marry",
-        "discount": "58% OFF",
-        "old": "₹ 23,700",
-        "price": "₹ 9,900"
-      },
+      {"title": "Gold",       "discount": "27% OFF", "old": "₹ 5,500",  "price": "₹ 4,000"},
+      {"title": "Prime Gold", "discount": "40% OFF", "old": "₹ 8,000",  "price": "₹ 4,800"},
+      {"title": "Till U Marry","discount": "58% OFF","old": "₹ 23,700", "price": "₹ 9,900"},
     ];
 
     bool isActive = currentPage == index;
@@ -221,8 +184,7 @@ class _EliteWelcomeOfferScreenState
       scale: isActive ? 1 : 0.92,
       duration: const Duration(milliseconds: 400),
       child: Padding(
-        padding:
-            const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
@@ -236,55 +198,31 @@ class _EliteWelcomeOfferScreenState
             ],
           ),
           child: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
             child: Column(
-              mainAxisAlignment:
-                  MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-
-                Text(
-                  plans[index]["title"]!,
-                  style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold),
-                ),
-
-                Text(
-                  plans[index]["discount"]!,
-                  style: const TextStyle(
-                      color: Colors.green,
-                      fontWeight: FontWeight.bold),
-                ),
-
-                Text(
-                  plans[index]["old"]!,
-                  style: const TextStyle(
-                      decoration:
-                          TextDecoration.lineThrough,
-                      color: Colors.grey),
-                ),
-
-                Text(
-                  plans[index]["price"]!,
-                  style: const TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold),
-                ),
-
-                const Icon(Icons.favorite,
-                    color: Colors.pink, size: 40),
-
-                /// ✅ PAY NOW BUTTON (WHITE TEXT FIXED)
+                Text(plans[index]["title"]!,
+                    style: const TextStyle(
+                        fontSize: 22, fontWeight: FontWeight.bold)),
+                Text(plans[index]["discount"]!,
+                    style: const TextStyle(
+                        color: Colors.green, fontWeight: FontWeight.bold)),
+                Text(plans[index]["old"]!,
+                    style: const TextStyle(
+                        decoration: TextDecoration.lineThrough,
+                        color: Colors.grey)),
+                Text(plans[index]["price"]!,
+                    style: const TextStyle(
+                        fontSize: 28, fontWeight: FontWeight.bold)),
+                const Icon(Icons.favorite, color: Colors.pink, size: 40),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.pink,
                     foregroundColor: Colors.white,
-                    minimumSize:
-                        const Size(double.infinity, 50),
+                    minimumSize: const Size(double.infinity, 50),
                     shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(25)),
+                        borderRadius: BorderRadius.circular(25)),
                   ),
                   onPressed: () {},
                   child: const Text(

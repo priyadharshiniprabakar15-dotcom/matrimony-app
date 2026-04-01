@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'elite_religious_details_screen.dart';
 
 class ElitePersonalDetailsScreen extends StatefulWidget {
-  const ElitePersonalDetailsScreen({super.key});
+  final String userId;
+
+  const ElitePersonalDetailsScreen({
+    super.key,
+    this.userId = "",
+  });
 
   @override
   State<ElitePersonalDetailsScreen> createState() =>
@@ -41,16 +46,9 @@ class _ElitePersonalDetailsScreenState
       List.generate(50, (index) => "${2024 - index}");
 
   final List<String> heights = [
-    "4 ft 10 in",
-    "4 ft 11 in",
-    "5 ft 0 in",
-    "5 ft 1 in",
-    "5 ft 2 in",
-    "5 ft 3 in",
-    "5 ft 4 in",
-    "5 ft 5 in",
-    "5 ft 6 in",
-    "5 ft 7 in",
+    "4 ft 10 in", "4 ft 11 in", "5 ft 0 in", "5 ft 1 in",
+    "5 ft 2 in",  "5 ft 3 in",  "5 ft 4 in", "5 ft 5 in",
+    "5 ft 6 in",  "5 ft 7 in",
   ];
 
   @override
@@ -72,7 +70,6 @@ class _ElitePersonalDetailsScreenState
     super.dispose();
   }
 
-  /// Floating Heart Animation
   Widget _floatingHeart(double top, double left, double size) {
     return AnimatedBuilder(
       animation: _heartAnimation,
@@ -82,28 +79,22 @@ class _ElitePersonalDetailsScreenState
           left: left,
           child: Opacity(
             opacity: 0.06,
-            child: Icon(
-              Icons.favorite,
-              color: gold,
-              size: size,
-            ),
+            child: Icon(Icons.favorite, color: gold, size: size),
           ),
         );
       },
     );
   }
 
-  Widget _toggleButton(String value, String? groupValue,
-      Function(String) onChanged) {
-
+  Widget _toggleButton(
+      String value, String? groupValue, Function(String) onChanged) {
     bool selected = value == groupValue;
 
     return GestureDetector(
       onTap: () => onChanged(value),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 250),
-        padding: const EdgeInsets.symmetric(
-            horizontal: 20, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         decoration: BoxDecoration(
           color: selected ? gold : Colors.white,
           borderRadius: BorderRadius.circular(18),
@@ -125,7 +116,6 @@ class _ElitePersonalDetailsScreenState
       String? value,
       List<String> items,
       Function(String?) onChanged) {
-
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
@@ -139,10 +129,7 @@ class _ElitePersonalDetailsScreenState
           value: value,
           isExpanded: true,
           items: items
-              .map((item) => DropdownMenuItem(
-                    value: item,
-                    child: Text(item),
-                  ))
+              .map((item) => DropdownMenuItem(value: item, child: Text(item)))
               .toList(),
           onChanged: onChanged,
         ),
@@ -158,7 +145,6 @@ class _ElitePersonalDetailsScreenState
         selectedHeight == null ||
         physicalStatus == null ||
         maritalStatus == null) {
-
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Please fill all required fields"),
@@ -173,7 +159,7 @@ class _ElitePersonalDetailsScreenState
       PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 400),
         pageBuilder: (_, __, ___) =>
-            const EliteReligiousDetailsScreen(),
+            EliteReligiousDetailsScreen(userId: widget.userId),
         transitionsBuilder: (_, animation, __, child) {
           return SlideTransition(
             position: Tween<Offset>(
@@ -196,10 +182,7 @@ class _ElitePersonalDetailsScreenState
         iconTheme: const IconThemeData(color: Colors.white),
         title: const Text(
           "Personal Details (1/5)",
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
       body: Stack(
@@ -218,12 +201,8 @@ class _ElitePersonalDetailsScreenState
                 const SizedBox(height: 15),
 
                 const Text("Gender",
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold)),
-
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 10),
-
                 Row(
                   children: [
                     _toggleButton("Male", gender,
@@ -234,155 +213,85 @@ class _ElitePersonalDetailsScreenState
                   ],
                 ),
 
-                const SizedBox(height: 25),
+                const SizedBox(height: 20),
 
                 const Text("Date of Birth",
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold)),
-
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 10),
-
                 Row(
                   children: [
                     Expanded(
-                      child: _dropdown("DD", selectedDay, days,
+                      child: _dropdown("Day", selectedDay, days,
                           (val) => setState(() => selectedDay = val)),
                     ),
                     const SizedBox(width: 10),
                     Expanded(
-                      child: _dropdown("MMM", selectedMonth, months,
+                      child: _dropdown("Month", selectedMonth, months,
                           (val) => setState(() => selectedMonth = val)),
                     ),
                     const SizedBox(width: 10),
                     Expanded(
-                      child: _dropdown("YYYY", selectedYear, years,
+                      child: _dropdown("Year", selectedYear, years,
                           (val) => setState(() => selectedYear = val)),
                     ),
                   ],
                 ),
 
-                const SizedBox(height: 25),
+                const SizedBox(height: 20),
 
                 const Text("Height",
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold)),
-
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 10),
-
-                _dropdown("Select your height",
-                    selectedHeight,
-                    heights,
+                _dropdown("Select Height", selectedHeight, heights,
                     (val) => setState(() => selectedHeight = val)),
 
-                const SizedBox(height: 25),
+                const SizedBox(height: 20),
 
-                const Text("Your physical status",
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold)),
-
+                const Text("Physical Status",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 10),
-
                 Row(
                   children: [
                     _toggleButton("Normal", physicalStatus,
                         (val) => setState(() => physicalStatus = val)),
                     const SizedBox(width: 12),
-                    _toggleButton("Physically challenged", physicalStatus,
+                    _toggleButton("Differently Abled", physicalStatus,
                         (val) => setState(() => physicalStatus = val)),
                   ],
                 ),
 
-                const SizedBox(height: 25),
+                const SizedBox(height: 20),
 
-                const Text("Your marital status",
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold)),
-
+                const Text("Marital Status",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 10),
-
                 Wrap(
                   spacing: 10,
                   runSpacing: 10,
                   children: [
-                    _toggleButton("Never married", maritalStatus,
-                        (val) => setState(() => maritalStatus = val)),
-                    _toggleButton("Widow", maritalStatus,
-                        (val) => setState(() => maritalStatus = val)),
-                    _toggleButton("Awaiting divorce", maritalStatus,
-                        (val) => setState(() => maritalStatus = val)),
-                    _toggleButton("Divorced", maritalStatus,
-                        (val) => setState(() => maritalStatus = val)),
-                  ],
+                    "Never Married",
+                    "Divorced",
+                    "Widowed",
+                    "Awaiting Divorce"
+                  ]
+                      .map((s) => _toggleButton(s, maritalStatus,
+                          (val) => setState(() => maritalStatus = val)))
+                      .toList(),
                 ),
 
                 const SizedBox(height: 40),
 
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color(0x55D4AF37),
-                        blurRadius: 25,
-                        spreadRadius: 3,
-                        offset: Offset(0, 10),
-                      ),
-                    ],
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: gold,
+                    minimumSize: const Size(double.infinity, 55),
                   ),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: gold,
-                      minimumSize: const Size(double.infinity, 55),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      elevation: 0,
-                    ),
-                    onPressed: _goToNextScreen,
-                    child: const Text(
-                      "Next",
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
+                  onPressed: _goToNextScreen,
+                  child: const Text(
+                    "Next",
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
-
-                const SizedBox(height: 25),
-
-                Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text(
-                        "Need help? Call  ",
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.black54,
-                        ),
-                      ),
-                      Icon(Icons.phone,
-                          color: Colors.orange,
-                          size: 18),
-                      SizedBox(width: 6),
-                      Text(
-                        "8144-99-88-77",
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: Color.fromRGBO(255, 152, 0, 1),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 40),
               ],
             ),
           ),

@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'elite_photo_upload_screen.dart';
 
 class EliteAdditionalDetailsScreen extends StatefulWidget {
-  const EliteAdditionalDetailsScreen({super.key});
+  final String userId;
+
+  const EliteAdditionalDetailsScreen({
+    super.key,
+    required this.userId,
+  });
 
   @override
   State<EliteAdditionalDetailsScreen> createState() =>
@@ -17,22 +22,16 @@ class _EliteAdditionalDetailsScreenState
   static const Color cream = Color(0xFFFFF8E7);
 
   String? familyStatus = "Upper middle class";
-  final TextEditingController aboutController =
-      TextEditingController();
+  final TextEditingController aboutController = TextEditingController();
 
   Widget _statusButton(String value) {
     bool selected = value == familyStatus;
 
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          familyStatus = value;
-        });
-      },
+      onTap: () => setState(() => familyStatus = value),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 250),
-        padding:
-            const EdgeInsets.symmetric(horizontal: 22, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 12),
         decoration: BoxDecoration(
           color: selected ? gold : Colors.white,
           borderRadius: BorderRadius.circular(25),
@@ -72,7 +71,7 @@ class _EliteAdditionalDetailsScreenState
       PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 400),
         pageBuilder: (_, __, ___) =>
-            const ElitePhotoUploadScreen(),
+            ElitePhotoUploadScreen(userId: widget.userId),
         transitionsBuilder: (_, animation, __, child) {
           return SlideTransition(
             position: Tween<Offset>(
@@ -104,10 +103,7 @@ class _EliteAdditionalDetailsScreenState
         iconTheme: const IconThemeData(color: Colors.white),
         title: const Text(
           "Additional Details (5/5)",
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
       body: SingleChildScrollView(
@@ -120,8 +116,7 @@ class _EliteAdditionalDetailsScreenState
 
             const Text(
               "Select family status",
-              style:
-                  TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
 
             const SizedBox(height: 15),
@@ -140,8 +135,7 @@ class _EliteAdditionalDetailsScreenState
 
             const Text(
               "A few words about myself",
-              style:
-                  TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
 
             const SizedBox(height: 15),
@@ -150,14 +144,12 @@ class _EliteAdditionalDetailsScreenState
               controller: aboutController,
               maxLines: 5,
               decoration: InputDecoration(
-                hintText:
-                    "Write something about yourself...",
+                hintText: "Write something about yourself...",
                 filled: true,
                 fillColor: Colors.white,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
-                  borderSide:
-                      BorderSide(color: Colors.grey.shade400),
+                  borderSide: BorderSide(color: Colors.grey.shade400),
                 ),
               ),
             ),
@@ -169,9 +161,7 @@ class _EliteAdditionalDetailsScreenState
               children: [
                 const Text(
                   "Minimum 10 characters",
-                  style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.black54),
+                  style: TextStyle(fontSize: 12, color: Colors.black54),
                 ),
                 GestureDetector(
                   onTap: _autoWrite,
@@ -189,7 +179,6 @@ class _EliteAdditionalDetailsScreenState
 
             const SizedBox(height: 40),
 
-            /// NEXT BUTTON
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
@@ -205,13 +194,10 @@ class _EliteAdditionalDetailsScreenState
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: gold,
-                  minimumSize:
-                      const Size(double.infinity, 55),
+                  minimumSize: const Size(double.infinity, 55),
                   shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(30),
+                    borderRadius: BorderRadius.circular(30),
                   ),
-                  elevation: 0,
                 ),
                 onPressed: _goToPhotoScreen,
                 child: const Text(
@@ -221,33 +207,6 @@ class _EliteAdditionalDetailsScreenState
                       fontWeight: FontWeight.bold,
                       color: Colors.white),
                 ),
-              ),
-            ),
-
-            const SizedBox(height: 25),
-
-            /// NEED HELP
-            Center(
-              child: Row(
-                mainAxisAlignment:
-                    MainAxisAlignment.center,
-                children: const [
-                  Text(
-                    "Need help? Call  ",
-                    style:
-                        TextStyle(color: Colors.black54),
-                  ),
-                  Icon(Icons.phone,
-                      color: Color(0xFFD4AF37),
-                      size: 18),
-                  SizedBox(width: 6),
-                  Text(
-                    "8144-99-88-77",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFFD4AF37)),
-                  ),
-                ],
               ),
             ),
 

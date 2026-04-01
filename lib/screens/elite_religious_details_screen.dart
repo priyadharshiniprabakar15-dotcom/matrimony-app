@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'elite_location_details_screen.dart';
 
 class EliteReligiousDetailsScreen extends StatefulWidget {
-  const EliteReligiousDetailsScreen({super.key});
+  final String userId;
+
+  const EliteReligiousDetailsScreen({
+    super.key,
+    required this.userId,
+  });
 
   @override
   State<EliteReligiousDetailsScreen> createState() =>
@@ -23,21 +28,12 @@ class _EliteReligiousDetailsScreenState
   bool willingAnyCaste = true;
 
   final List<String> religions = [
-    "Hindu",
-    "Christian",
-    "Muslim",
-    "Sikh",
-    "Jain",
-    "Other"
+    "Hindu", "Christian", "Muslim", "Sikh", "Jain", "Other"
   ];
 
   final List<String> castes = [
-    "Don't wish to specify",
-    "Brahmin",
-    "Kshatriya",
-    "Vaishya",
-    "SC/ST",
-    "Other"
+    "Don't wish to specify", "Brahmin", "Kshatriya",
+    "Vaishya", "SC/ST", "Other"
   ];
 
   Widget _dropdown(
@@ -45,14 +41,11 @@ class _EliteReligiousDetailsScreenState
       String? value,
       List<String> items,
       Function(String?) onChanged) {
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(label,
-            style: const TextStyle(
-                fontSize: 14,
-                color: Colors.black54)),
+            style: const TextStyle(fontSize: 14, color: Colors.black54)),
         const SizedBox(height: 6),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -68,12 +61,9 @@ class _EliteReligiousDetailsScreenState
               items: items
                   .map((item) => DropdownMenuItem(
                         value: item,
-                        child: Text(
-                          item,
-                          style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500),
-                        ),
+                        child: Text(item,
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w500)),
                       ))
                   .toList(),
               onChanged: onChanged,
@@ -88,15 +78,10 @@ class _EliteReligiousDetailsScreenState
     bool selected = value == selectedDosham;
 
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          selectedDosham = value;
-        });
-      },
+      onTap: () => setState(() => selectedDosham = value),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 250),
-        padding:
-            const EdgeInsets.symmetric(horizontal: 22, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 12),
         decoration: BoxDecoration(
           color: selected ? gold : Colors.white,
           borderRadius: BorderRadius.circular(25),
@@ -119,7 +104,7 @@ class _EliteReligiousDetailsScreenState
       PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 400),
         pageBuilder: (_, __, ___) =>
-            const EliteLocationDetailsScreen(),
+            EliteLocationDetailsScreen(userId: widget.userId),
         transitionsBuilder: (_, animation, __, child) {
           return SlideTransition(
             position: Tween<Offset>(
@@ -142,10 +127,7 @@ class _EliteReligiousDetailsScreenState
         iconTheme: const IconThemeData(color: Colors.white),
         title: const Text(
           "Religious Details (2/5)",
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
       body: SingleChildScrollView(
@@ -157,31 +139,17 @@ class _EliteReligiousDetailsScreenState
             const SizedBox(height: 10),
 
             const Text("Religion",
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold)),
-
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 10),
-
-            _dropdown(
-                "Religion",
-                selectedReligion,
-                religions,
+            _dropdown("Religion", selectedReligion, religions,
                 (val) => setState(() => selectedReligion = val)),
 
             const SizedBox(height: 25),
 
             const Text("Caste",
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold)),
-
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 10),
-
-            _dropdown(
-                "Caste",
-                selectedCaste,
-                castes,
+            _dropdown("Caste", selectedCaste, castes,
                 (val) => setState(() => selectedCaste = val)),
 
             const SizedBox(height: 15),
@@ -193,8 +161,7 @@ class _EliteReligiousDetailsScreenState
                 fillColor: Colors.white,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
-                  borderSide:
-                      BorderSide(color: Colors.grey.shade400),
+                  borderSide: BorderSide(color: Colors.grey.shade400),
                 ),
               ),
             ),
@@ -206,16 +173,11 @@ class _EliteReligiousDetailsScreenState
                 Checkbox(
                   value: willingAnyCaste,
                   activeColor: gold,
-                  onChanged: (val) {
-                    setState(() {
-                      willingAnyCaste = val ?? false;
-                    });
-                  },
+                  onChanged: (val) =>
+                      setState(() => willingAnyCaste = val ?? false),
                 ),
                 const Expanded(
-                  child: Text(
-                      "Willing to marry from any caste"),
-                ),
+                    child: Text("Willing to marry from any caste")),
               ],
             ),
 
@@ -223,13 +185,9 @@ class _EliteReligiousDetailsScreenState
 
             const Text(
               "Do you have any dosham? (Optional)",
-              style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-
             const SizedBox(height: 15),
-
             Row(
               children: [
                 _doshamButton("No"),
@@ -242,7 +200,6 @@ class _EliteReligiousDetailsScreenState
 
             const SizedBox(height: 45),
 
-            /// NEXT BUTTON
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
@@ -258,13 +215,7 @@ class _EliteReligiousDetailsScreenState
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: gold,
-                  minimumSize:
-                      const Size(double.infinity, 55),
-                  shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(30),
-                  ),
-                  elevation: 0,
+                  minimumSize: const Size(double.infinity, 55),
                 ),
                 onPressed: _goToNextScreen,
                 child: const Text(
@@ -274,33 +225,6 @@ class _EliteReligiousDetailsScreenState
                       fontWeight: FontWeight.bold,
                       color: Colors.white),
                 ),
-              ),
-            ),
-
-            const SizedBox(height: 25),
-
-            /// NEED HELP
-            Center(
-              child: Row(
-                mainAxisAlignment:
-                    MainAxisAlignment.center,
-                children: const [
-                  Text(
-                    "Need help? Call  ",
-                    style:
-                        TextStyle(color: Colors.black54),
-                  ),
-                  Icon(Icons.phone,
-                      color: Color(0xFFD4AF37),
-                      size: 18),
-                  SizedBox(width: 6),
-                  Text(
-                    "8144-99-88-77",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFFD4AF37)),
-                  ),
-                ],
               ),
             ),
 

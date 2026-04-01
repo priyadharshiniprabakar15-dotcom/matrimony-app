@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'elite_professional_details_screen.dart';
 
 class EliteLocationDetailsScreen extends StatefulWidget {
-  const EliteLocationDetailsScreen({super.key});
+  final String userId;
+
+  const EliteLocationDetailsScreen({
+    super.key,
+    required this.userId,
+  });
 
   @override
   State<EliteLocationDetailsScreen> createState() =>
@@ -20,62 +25,46 @@ class _EliteLocationDetailsScreenState
   String? selectedState;
   String? selectedCity;
 
-  /// 🌍 WORLD DATA STRUCTURE
   final Map<String, Map<String, List<String>>> worldData = {
-
     "India": {
       "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Salem"],
       "Kerala": ["Kochi", "Trivandrum", "Kozhikode"],
       "Karnataka": ["Bangalore", "Mysore"],
     },
-
     "USA": {
       "California": ["Los Angeles", "San Francisco"],
       "Texas": ["Houston", "Dallas"],
     },
-
     "Canada": {
       "Ontario": ["Toronto", "Ottawa"],
       "Quebec": ["Montreal", "Quebec City"],
     },
-
     "Australia": {
       "New South Wales": ["Sydney"],
       "Victoria": ["Melbourne"],
     },
-
     "UK": {
       "England": ["London", "Manchester"],
       "Scotland": ["Edinburgh"],
     }
   };
 
-  /// 🌍 GET COUNTRIES
   List<String> get countries => worldData.keys.toList();
 
-  /// 🏛 GET STATES
   List<String> get states =>
-      selectedCountry == null
-          ? []
-          : worldData[selectedCountry!]!.keys.toList();
+      selectedCountry == null ? [] : worldData[selectedCountry!]!.keys.toList();
 
-  /// 🏙 GET CITIES
   List<String> get cities =>
-      (selectedCountry != null &&
-              selectedState != null)
+      (selectedCountry != null && selectedState != null)
           ? worldData[selectedCountry!]![selectedState!]!
           : [];
 
-  /// 🔍 SEARCHABLE COUNTRY
   Widget _searchableCountryDropdown() {
     return Autocomplete<String>(
       optionsBuilder: (TextEditingValue value) {
-        if (value.text.isEmpty) {
-          return countries;
-        }
-        return countries.where((country) =>
-            country.toLowerCase().contains(
-                value.text.toLowerCase()));
+        if (value.text.isEmpty) return countries;
+        return countries.where(
+            (c) => c.toLowerCase().contains(value.text.toLowerCase()));
       },
       onSelected: (value) {
         setState(() {
@@ -84,8 +73,7 @@ class _EliteLocationDetailsScreenState
           selectedCity = null;
         });
       },
-      fieldViewBuilder:
-          (context, controller, focusNode, _) {
+      fieldViewBuilder: (context, controller, focusNode, _) {
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 14),
           decoration: BoxDecoration(
@@ -111,7 +99,6 @@ class _EliteLocationDetailsScreenState
       String? value,
       List<String> items,
       Function(String?) onChanged) {
-
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14),
       decoration: BoxDecoration(
@@ -125,10 +112,7 @@ class _EliteLocationDetailsScreenState
           value: value,
           isExpanded: true,
           items: items
-              .map((item) => DropdownMenuItem(
-                    value: item,
-                    child: Text(item),
-                  ))
+              .map((item) => DropdownMenuItem(value: item, child: Text(item)))
               .toList(),
           onChanged: onChanged,
         ),
@@ -140,7 +124,6 @@ class _EliteLocationDetailsScreenState
     if (selectedCountry == null ||
         selectedState == null ||
         selectedCity == null) {
-
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Please select Country, State & City"),
@@ -154,7 +137,7 @@ class _EliteLocationDetailsScreenState
       context,
       MaterialPageRoute(
         builder: (_) =>
-            const EliteProfessionalDetailsScreen(),
+            EliteProfessionalDetailsScreen(userId: widget.userId),
       ),
     );
   }
@@ -165,105 +148,56 @@ class _EliteLocationDetailsScreenState
       backgroundColor: cream,
       appBar: AppBar(
         backgroundColor: primaryMaroon,
-        iconTheme:
-            const IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         title: const Text(
           "Location Details (3/5)",
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
             const SizedBox(height: 20),
 
             const Text("Your residing country",
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold)),
-
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 10),
-
             _searchableCountryDropdown(),
 
             const SizedBox(height: 25),
 
             const Text("Your residing state",
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold)),
-
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 10),
-
-            _dropdown(
-                "Select State",
-                selectedState,
-                states,
-                (val) {
-                  setState(() {
-                    selectedState = val;
-                    selectedCity = null;
-                  });
-                }),
+            _dropdown("Select State", selectedState, states, (val) {
+              setState(() {
+                selectedState = val;
+                selectedCity = null;
+              });
+            }),
 
             const SizedBox(height: 25),
 
             const Text("Your residing city",
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold)),
-
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 10),
-
-            _dropdown(
-                "Select City",
-                selectedCity,
-                cities,
-                (val) =>
-                    setState(() => selectedCity = val)),
+            _dropdown("Select City", selectedCity, cities,
+                (val) => setState(() => selectedCity = val)),
 
             const SizedBox(height: 45),
 
-            Container(
-              decoration: BoxDecoration(
-                borderRadius:
-                    BorderRadius.circular(30),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color(0x55D4AF37),
-                    blurRadius: 25,
-                    spreadRadius: 3,
-                    offset: Offset(0, 10),
-                  ),
-                ],
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: gold,
+                minimumSize: const Size(double.infinity, 55),
               ),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: gold,
-                  minimumSize:
-                      const Size(double.infinity, 55),
-                  shape:
-                      RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(30),
-                  ),
-                ),
-                onPressed: _goToProfessionalScreen,
-                child: const Text(
-                  "Next",
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight:
-                          FontWeight.bold,
-                      color: Colors.white),
-                ),
+              onPressed: _goToProfessionalScreen,
+              child: const Text(
+                "Next",
+                style: TextStyle(color: Colors.white),
               ),
             ),
 
